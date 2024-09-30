@@ -8,27 +8,11 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color:  #242424;
   background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-
-/* Default shadow for all colors except black and white */
-.default-shadow {
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-/* Strong light shadow for black cards */
-.light-shadow {
-  text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
-}
-
-/* Strong dark shadow for white cards */
-.dark-shadow {
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }

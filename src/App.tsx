@@ -15,23 +15,9 @@ interface Color {
     comp?: ComplementaryColor[]; // Complementary colors are optional
 }
 
-// Helper function to determine if a color is "light" (close to white)
-const isLightColor = (hex: string): boolean => {
-    const r = Number.parseInt(hex.substring(0, 2), 16);
-    const g = Number.parseInt(hex.substring(2, 4), 16);
-    const b = Number.parseInt(hex.substring(4, 6), 16);
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 200; // Adjust threshold for "lightness"
-};
-
 // Helper function to determine if a color is "black"
-const isDarkColor = (hex: string): boolean => {
+const isBlackColor = (hex: string): boolean => {
     return hex === "000000"; // Pure black
-};
-
-// Helper function to determine if a color is "white"
-const isWhiteColor = (hex: string): boolean => {
-    return hex === "FFFFFF"; // Pure white
 };
 
 const ColorCard = ({ color }: { color: Color }) => {
@@ -53,26 +39,23 @@ const ColorCard = ({ color }: { color: Color }) => {
         });
     };
 
-    // Determine the appropriate class for text shadow based on color
-    const textShadowClass = isWhiteColor(color.hex)
-        ? 'dark-shadow'  // Strong dark shadow for white cards
-        : isDarkColor(color.hex)
-            ? 'light-shadow'  // Strong light shadow for black cards
-            : 'default-shadow'; // Default shadow for all other colors
+    // Determine text color based on whether the card is black
+    const textColor = isBlackColor(color.hex) ? '#828282' : '#242424'; // White text for black cards
 
     return (
         <div
-            className="m-4 p-4 rounded-lg shadow-lg cursor-pointer flex flex-col justify-center items-center"
+            className="m-4 p-4 rounded-lg cursor-pointer flex flex-col justify-center items-center"
             style={{
                 backgroundColor: `#${color.hex}`,
                 width: '250px',
                 height: '175px', // Adjusted height to be shorter
-                color: isLightColor(color.hex) ? '#000000' : '#FFFFFF', // Set text color dynamically
+                color: textColor, // Set the text color dynamically
+                borderColor: textColor, // Set border to match text color
             }}
             onClick={() => copyToClipboard(color.hex)} // Copy main hex value when the card is clicked
         >
             {/* Main color name */}
-            <h2 className={`text-2xl text-center mb-2 ${textShadowClass}`}>
+            <h2 className="text-2xl text-center mb-2 no-shadow">
                 {color.name}
             </h2>
 
@@ -85,7 +68,7 @@ const ColorCard = ({ color }: { color: Color }) => {
                             className="m-1 w-10 h-10 flex items-center justify-center rounded cursor-pointer relative"
                             style={{
                                 backgroundColor: `#${compColor.hex}`,
-                                border: `1px dashed ${isLightColor(compColor.hex) ? '#000000' : '#FFFFFF'}`, // White border except for light colors
+                                border: `.1px dashed ${textColor}`, // Border matches text color
                             }}
                             onMouseEnter={() => handleMouseEnter(compColor.hex)}
                             onMouseLeave={handleMouseLeave}
@@ -99,13 +82,13 @@ const ColorCard = ({ color }: { color: Color }) => {
             )}
 
             {/* Display the main or hovered complementary color hex at the bottom */}
-            <p className={`mt-4 text-sm text-center ${textShadowClass}`}>
+            <p className="mt-4 text-sm text-center no-shadow">
                 #{hoveredCompHex ? hoveredCompHex : color.hex}
             </p>
 
             {/* Show "Copied!" message when hex is copied */}
             {copied && (
-                <p className={`text-sm text-center mt-2 ${textShadowClass}`}>
+                <p className="text-sm text-center mt-2 no-shadow">
                     Copied: #{copied}
                 </p>
             )}
