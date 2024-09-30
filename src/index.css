@@ -17,3 +17,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Apply blur to the color squares initially */
+.blur-effect {
+  filter: blur(1px);
+  transition: filter 0.3s ease;
+}
+
+/* Remove the blur on hover */
+.blur-effect:hover {
+  filter: none;
+}
+
+/* Add text shadow to improve text visibility */
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  margin: 10px;
+}
