@@ -16,30 +16,21 @@ interface Color {
 }
 
 // Helper function to determine if a color is "black"
-const isBlackColor = (hex: string): boolean => {
-    return hex === "000000"; // Pure black
-};
+const isBlackColor = (hex: string): boolean => hex === "000000"; // Pure black
 
 const ColorCard = ({ color }: { color: Color }) => {
     const [hoveredCompHex, setHoveredCompHex] = useState<string | null>(null); // Track hovered complementary color
     const [copied, setCopied] = useState<string | null>(null); // Track copied hex value
 
-    const handleMouseEnter = (hex: string) => {
-        setHoveredCompHex(hex); // Set the hex of the hovered complementary color
-    };
-
-    const handleMouseLeave = () => {
-        setHoveredCompHex(null); // Clear the hovered hex when mouse leaves
-    };
-
+    const handleMouseEnter = (hex: string) => setHoveredCompHex(hex); // Set hovered hex
+    const handleMouseLeave = () => setHoveredCompHex(null); // Clear hovered hex
     const copyToClipboard = (hex: string) => {
-        navigator.clipboard.writeText(hex).then(() => { // No leading `#`
-            setCopied(hex); // Set the copied hex value
-            setTimeout(() => setCopied(null), 1500); // Clear "copied" status after 1.5 seconds
+        navigator.clipboard.writeText(hex).then(() => { // Copy without leading `#`
+            setCopied(hex);
+            setTimeout(() => setCopied(null), 1500); // Clear copied status after 1.5 seconds
         });
     };
 
-    // Determine text color based on whether the card is black
     const textColor = isBlackColor(color.hex) ? '#828282' : '#242424'; // White text for black cards
 
     return (
@@ -55,7 +46,7 @@ const ColorCard = ({ color }: { color: Color }) => {
             onClick={() => copyToClipboard(color.hex)} // Copy main hex value when the card is clicked
         >
             {/* Main color name */}
-            <h2 className="text-2xl text-center mb-2 no-shadow">
+            <h2 className="text-2xl text-center mb-2">
                 {color.name}
             </h2>
 
@@ -68,7 +59,7 @@ const ColorCard = ({ color }: { color: Color }) => {
                             className="m-1 w-10 h-10 flex items-center justify-center rounded cursor-pointer relative"
                             style={{
                                 backgroundColor: `#${compColor.hex}`,
-                                border: `.1px dashed ${textColor}`, // Border matches text color
+                                border: `1px dashed ${textColor}`, // Border matches text color
                             }}
                             onMouseEnter={() => handleMouseEnter(compColor.hex)}
                             onMouseLeave={handleMouseLeave}
@@ -82,13 +73,13 @@ const ColorCard = ({ color }: { color: Color }) => {
             )}
 
             {/* Display the main or hovered complementary color hex at the bottom */}
-            <p className="mt-4 text-sm text-center no-shadow">
+            <p className="mt-4 text-sm text-center">
                 #{hoveredCompHex ? hoveredCompHex : color.hex}
             </p>
 
             {/* Show "Copied!" message when hex is copied */}
             {copied && (
-                <p className="text-sm text-center mt-2 no-shadow">
+                <p className="text-sm text-center mt-2">
                     Copied: #{copied}
                 </p>
             )}
